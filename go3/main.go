@@ -15,6 +15,10 @@ var (
 	z      complex128 = cmplx.Sqrt(-5 + 12i)
 )
 const Pi = 3.14
+const(
+	Big = 1 << 100
+	Small = Big >> 99
+)
 func main() {
      fmt.Println("shining in  go\n",time.Now())
      fmt.Println("现在是随机数:",rand.Intn(199))
@@ -48,9 +52,11 @@ func main() {
      fmt.Println("Hello", World)
      //Pi := 3.1
      fmt.Println("Happy", Pi, "Day")//静态常量用const定义，且不能用=赋值.使用:=会重新定义先前声明的静态常量使之成为变量
-
-	const Truth = true
-	fmt.Println("Go rules?", Truth)
+     const Truth = true
+     fmt.Println("Go rules?", Truth)
+     fmt.Println("needInt(Small)",needInt(Small))
+     fmt.Println("needFloat(Small)",needFloat(Small))
+     fmt.Println("needFloat(Big)",needFloat(Big))
 }
 func add(x ,y int)int {
      return x + y
@@ -63,3 +69,9 @@ func split(sum int) (x,y int){
      y = sum - x
      return
 }
+func needInt(x int)int {
+     return x*10+1
+}
+func needFloat(x float64)float64{
+     return x*0.1
+}    
