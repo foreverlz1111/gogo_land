@@ -21,7 +21,7 @@ const(
 )
 func main() {
      fmt.Println("shining in  go\n",time.Now())
-     fmt.Println("现在是随机数:",rand.Intn(199))
+     fmt.Println("现在是随机数:(固定不变的)",rand.Intn(199))
      fmt.Println("9开根：",math.Sqrt(9))
      fmt.Println("Pi :",math.Pi)
      fmt.Println("add(7,8)= ",add(7,8))
