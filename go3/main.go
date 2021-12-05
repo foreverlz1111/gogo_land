@@ -53,4 +53,42 @@ func main(){
 	 array2 := array1[4:7]//array2[4]、array2[5]、array2[6]这三个
 	 fmt.Println("array1 = ",array1)
 	 fmt.Println("array2 = ",array2)
+
+      names := [4]string{"name1","name2","name3","name4"}//[4]中的数字4可以省略
+      fmt.Println(names)
+      name_b := names[1:3]
+      fmt.Println(names[0:2],name_b)
+
+      array3 := []int{1,2,3,4,5,6,7,8}
+      fmt.Println("array3 = ",array3[0:3])
+      array4 := []bool{true,true,false}
+      fmt.Println("array4",array4)
+      array5 := []struct{
+      a int
+      b bool}{
+      {1,true},
+      {2,false},
+      {3,true},
+      }//严格的缩进
+      fmt.Println("array5",array5)
+      
+      printSlice(array3)
+      
+      s := array3[:0]//取0个
+      printSlice(s)
+      s = s[:4]//取四个
+      printSlice(s)
+      s = s[2:]//舍弃前两个
+      printSlice(s)
+
+      //s = s[6:6]//此时s也是空len()和空cap()但不显示为nil
+      
+      var array_emp []int
+      fmt.Println(array_emp, len(array_emp), cap(array_emp))
+      if  array_emp == nil {
+      	 fmt.Println("空数组！")
+	 }
+}
+func printSlice(s []int){
+     fmt.Printf("长度= %d ，首个元素 = %d s= %v\n",len(s),cap(s),s)
 }
