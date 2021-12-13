@@ -33,7 +33,16 @@ func adder() func(int)int{
 		return sum
 	}
 }
-
+func fibonacci() func()int{
+	before,nextt := 0 , 1
+	return func()int{
+		summ := before + nextt
+		before = nextt
+		nextt = summ
+		return before
+	}
+}
+	
 func main(){
 	fmt.Println("hello pointer")
 	i,j := 53,443
@@ -194,6 +203,11 @@ func main(){
 	fmt.Printf("闭包：")
 	for i := 0;i < 5 ;i++{
 		fmt.Println(pos_num(i),neg_num(-2 * i))
+	}
+
+	fib := fibonacci()
+	for i := 0; i < 14;i++{
+		fmt.Printf("斐波那契数列 第%d次: %d\n",i,fib())
 	}
 }
 func printSlice(s []int){
