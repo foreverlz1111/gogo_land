@@ -20,6 +20,8 @@ const(
 	Small = Big >> 99
 )
 func main() {
+     //var input_value int
+     //fmt.Scanf("%d",&input_value)//使用fmt.Scan(&input_value)不指定输入类型
      fmt.Println("shining in  go\n",time.Now())
      fmt.Println("现在是随机数:(固定不变的)",rand.Intn(199))
      fmt.Println("9开根：",math.Sqrt(9))
