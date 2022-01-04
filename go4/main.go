@@ -1,9 +1,8 @@
 package main
-
 import(
 	"fmt"
 	"math"
-	
+	"time"
 )
 type vertex1 struct{
 	X, Y float64
@@ -80,7 +79,30 @@ type person struct {
 	_age int
 }
 func (p person) String() string{
-	return fmt.Sprintf("%v (%v years)",p._name,p._age)
+	return fmt.Sprintf("%v (%v years old)",p._name,p._age)
+}
+type _ipaddress [4]byte
+//***********1错误结构定义，2错误封装，3函数错误定义
+type _error_output struct{
+	when time.Time
+	what string
+}
+func (e *_error_output)Error()string{
+	//封装错误信息
+	return fmt.Sprintf("time : %v\ninfo : %s",e.when,e.what)
+}
+func _Run()error{
+	return &_error_output{time.Now(),"错误",}
+        }
+/***********/
+type _sqrt_value float64
+func (x _sqrt_value)Error()string{
+	return fmt.Sprintf("value:%f info:输入负数！",x)
+}
+func _Sqrt(x _sqrt_value) (float64,error) {
+	if x < 0{
+		return float64(x),x.Error
+	}
 }
 func main(){
 	f1 := myfloat(-math.Sqrt(9))
@@ -141,4 +163,19 @@ func main(){
 	person2 := person{"jack",31}
 	fmt.Println("person1,person2 = ",person1,person2)
 
+	host1 := map[string]_ipaddress{
+		"loopback":{127,0,0,1},
+		"googleDNS":{8,8,8,8},
+	}
+	for name,ip := range host1{
+		fmt.Printf("%v : %v \n",name,ip)
+	}
+
+	if error1 := _Run();error1 != nil{
+		fmt.Println(error1)
+	}
+	var sqrt_value1  _sqrt_value
+	sqrt_value1 = 1
+	fmt.Println(_Sqrt(sqrt_value1))
+	
 }
