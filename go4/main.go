@@ -3,6 +3,8 @@ import(
 	"fmt"
 	"math"
 	"time"
+	"io"
+	"strings"
 )
 type vertex1 struct{
 	X, Y float64
@@ -89,21 +91,27 @@ type _error_output struct{
 }
 func (e *_error_output)Error()string{
 	//封装错误信息
-	return fmt.Sprintf("time : %v\ninfo : %s",e.when,e.what)
+	return fmt.Sprintf("时间 : %v\n信息 : %s",e.when,e.what)
 }
 func _Run()error{
 	return &_error_output{time.Now(),"错误",}
         }
 /***********/
+//**********封装一个开方错误
 type _sqrt_value float64
 func (x _sqrt_value)Error()string{
-	return fmt.Sprintf("value:%f info:输入负数！",x)
+	//在 Error 方法内调用 fmt.Sprint(e) 会让程序陷入死循环
+	return fmt.Sprintf("输入值:%f 信息:输入负数！",x)
 }
 func _Sqrt(x _sqrt_value) (float64,error) {
-	if x < 0{
-		return float64(x),x.Error
+	if x > 0{
+		//math.Sqrt()接受float64类型
+		return math.Sqrt(float64(x)),nil
+	}else{
+	return 0,_sqrt_value(x)
 	}
 }
+/***********/
 func main(){
 	f1 := myfloat(-math.Sqrt(9))
 	fmt.Println("f1 = ",f1.abs())
@@ -174,8 +182,20 @@ func main(){
 	if error1 := _Run();error1 != nil{
 		fmt.Println(error1)
 	}
-	var sqrt_value1  _sqrt_value
-	sqrt_value1 = 1
-	fmt.Println(_Sqrt(sqrt_value1))
+
+	//输入负数、复数返回错误信息
+	fmt.Println(_Sqrt(-1))
+	fmt.Println(_Sqrt(4))
+
+	my_reader := strings.NewReader("I am reader!,and this is a initual sentence")
+	reader_bit := make([]byte,8)
+	for {
+		n ,err := my_reader.Read(reader_bit)
+		fmt.Printf("字节数：%d 错误信息：%v 字节内容：%v\n",n,err,reader_bit)
+		fmt.Printf("reader_bit[:n] = %s \n",reader_bit[:n])
+		if err == io.EOF{
+			break
+		}
+	}
 	
 }
