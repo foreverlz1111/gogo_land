@@ -3,12 +3,13 @@ package main
 import (
 	"fmt"
 	"time"
-	"tour/tree"
+	"go5/tree"
 )
 
 func _Say(s string) {
-	for i := 0; i <= 5; i++ {
-		time.Sleep(50 * time.Millisecond)
+	for i := 1; i <= 3; i++ {
+		//等一等
+		//time.Sleep(50 * time.Millisecond)
 		fmt.Println(i, ":", s)
 	}
 }
@@ -27,25 +28,42 @@ func _Fibonacci(n int, c chan int) {
 	}
 	close(c)
 }
-func _Fibonacci_select(c, quit chan int) {
+func _FibonacciSelect(c, quit chan int) {
 	x, y := 0, 1
 	for {
 		select {
 		case c <- x:
 			x, y = y, x+y
 		case <-quit:
-			fmt.Println("退出！")
+			fmt.Println("退出斐波那契")
 			return
 		}
 	}
 }
+func Walk(t *tree.Tree,c chan int) string{
+	//isLRempty = false
+	var tmp *tree.Tree
+	tmp = t
+	fmt.Println(tmp.Value)
+	for{
+		if tmp.Left != nil{
+			tmp = tmp.Left
+			continue
+		}
+		fmt.Println(tmp.Value)
+	}
+	return ""
+}
 func main() {
+
 	//go程
-	go _Say("world")
-	_Say("")
+	fmt.Println("go程")
+	go _Say("World")
+	_Say("Hello")
 	/**********/
 
 	//go信道
+	fmt.Println("go信道")
 	array1 := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
 	channel1 := make(chan int)
 	go _Sum(array1[:len(array1)/2], channel1)
@@ -55,6 +73,7 @@ func main() {
 	/**********/
 
 	//go缓冲信道
+	fmt.Println("go缓冲信道")
 	channel2 := make(chan int, 2)
 	channel2 <- 1
 	channel2 <- 2
@@ -65,6 +84,7 @@ func main() {
 	/**********/
 
 	//关闭信道
+	fmt.Println("关闭信道")
 	channel3 := make(chan int, 10)
 	go _Fibonacci(cap(channel3), channel3) //信道的容量
 	for v := range channel3 {
@@ -73,6 +93,7 @@ func main() {
 	/**********/
 
 	//select
+	fmt.Println("select")
 	channel4 := make(chan int)
 	channel4_quit := make(chan int)
 	go func() {
@@ -81,26 +102,35 @@ func main() {
 		}
 		channel4_quit <- 0
 	}()
-	_Fibonacci_select(channel4, channel4_quit)
+	_FibonacciSelect(channel4, channel4_quit)
 	/**********/
 
 	//select 默认执行
-	tick := time.Tick(100 * time.Millisecond)
-	boom := time.After(500 * time.Millisecond)
-	for{
-		select{
-			case <- tick:
+	fmt.Println("select 默认执行")
+	tick := time.Tick(50 * time.Millisecond)
+	boom := time.After(100 * time.Millisecond)
+	isboom := false
+	for {
+		select {
+		case <-tick:
 			fmt.Println("计时中...")
-			case <- boom:
+		case <-boom:
 			fmt.Println("触发！")
-			return
-			default:
-			fmt.Println("默认情况")
-			time.Sleep(50*time.Millisecond)
+			isboom = true
+		default:
+			fmt.Println("滴...")
+			time.Sleep(50 * time.Millisecond)
+		}
+		if isboom{
+			break
 		}
 	}
 	/**********/
 
 	//等价二叉查找树
-	my_tree := tree.Tree{}
+	fmt.Println("等价二叉查找树")
+	t := tree.New(1)//
+	treechan := make(chan int,10)
+	fmt.Println(Walk(t,treechan))
+	fmt.Println(t.String())
 }
