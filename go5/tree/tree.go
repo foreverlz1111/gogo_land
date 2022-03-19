@@ -35,11 +35,14 @@ func (t *Tree) String() string {
 	}
 	s := ""
 	if t.Left != nil {
+		fmt.Println("check left,current",t.Value)
 		s += t.Left.String() + "\t-"
 	}
+	fmt.Println("add+ ",t.Value)
 	s += fmt.Sprint(t.Value)
 	if t.Right != nil {
+		fmt.Println("check right,currnt ",t.Value)
 		s += "-\t" + t.Right.String()
 	}
-	return "(" + s + ")"
+	return "" + s + ""
 }

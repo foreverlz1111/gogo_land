@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 	"go5/tree"
+	"sync"
 )
 
 func _Say(s string) {
@@ -40,19 +41,46 @@ func _FibonacciSelect(c, quit chan int) {
 		}
 	}
 }
-func Walk(t *tree.Tree,c chan int) string{
-	//isLRempty = false
-	var tmp *tree.Tree
-	tmp = t
-	fmt.Println(tmp.Value)
-	for{
-		if tmp.Left != nil{
-			tmp = tmp.Left
-			continue
-		}
-		fmt.Println(tmp.Value)
+func Walk(t *tree.Tree,c chan int){
+	//isLRempty = fales
+	if t == nil{
+		return
 	}
-	return ""
+	if t.Left != nil{
+		Walk(t.Left,c)
+	}
+	c <- t.Value
+	if t.Right != nil{
+		Walk(t.Right,c)
+	}
+}
+func SameTree(t1,t2 *tree.Tree) bool{
+	c1 := make(chan int,10)
+	c2 := make(chan int,10)
+	same := false
+	Walk(t1,c1)
+	Walk(t2,c2)
+	for x := 1;x <= len(c1);x++{
+		if(<- c1 != <- c2){
+			break
+		}
+		same = true
+	}
+	return same
+}
+type SafeCounter struct{
+	v map[string]int
+	mux sync.Mutex
+}
+func (c *SafeCounter)Increase(key string){
+	c.mux.Lock()
+	c.v[key]++
+	c.mux.Unlock()
+}
+func (c *SafeCounter) Value(key string)int{
+	c.mux.Lock()
+	defer c.mux.Unlock()
+	return c.v[key]
 }
 func main() {
 
@@ -128,9 +156,17 @@ func main() {
 	/**********/
 
 	//等价二叉查找树
-	fmt.Println("等价二叉查找树")
-	t := tree.New(1)//
-	treechan := make(chan int,10)
-	fmt.Println(Walk(t,treechan))
-	fmt.Println(t.String())
+	fmt.Printf("等价二叉查找树: ")
+	tree1 := tree.New(1)
+	tree2 := tree.New(2)
+	fmt.Println("",SameTree(tree1,tree2))
+
+	//互斥锁
+	fmt.Printf("互斥：")
+	c := SafeCounter{v:make(map[string]int)}
+	for i := 0; i <90;i++{
+		go c.Increase("xxx")
+	}
+	time.Sleep(time.Second)
+	fmt.Println(c.Value("xxx"))
 }
