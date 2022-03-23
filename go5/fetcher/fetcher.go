@@ -2,39 +2,43 @@ package main
 
 import "fmt"
 
-type Fetcher interface{
-	Fetch(url string) (body string,urls []string,err error)
+type Fetcher interface {
+	Fetch(url string) (body string, urls []string, err error)
 }
-func Crawl(url string,depth int ,fetcher Fetcher){
-	if depth <= 0{
+
+func Crawl(url string, depth int, fetcher Fetcher) {
+	if depth <= 0 {
 		return
 	}
-	body,urls,err := fetcher.Fetch(url)
-	if err != nil{
+	body, urls, err := fetcher.Fetch(url)
+	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Printf("找到 %s% %q\n",url,body)
-	for _,u := range urls{
-		Crawl(u,depth-1,fetcher)
+	fmt.Printf("找到 %s% %q\n", url, body)
+	for _, u := range urls {
+		Crawl(u, depth-1, fetcher)
 	}
 	return
 }
-func main(){
-	Crawl("https://golang.org/",4,fetcher)
+func main() {
+	Crawl("https://golang.org/", 4, fetcher)
 }
+
 type fakeFetcher map[string]*fakeResult
 
-type fakeResult struct{
+type fakeResult struct {
 	body string
 	urls []string
 }
-func (f fakeFetcher) Fetch(url string)(string,[]string,error){
-	if res,ok := f[url];ok{
-		return res.body,res.urls,nil
+
+func (f fakeFetcher) Fetch(url string) (string, []string, error) {
+	if res, ok := f[url]; ok {
+		return res.body, res.urls, nil
 	}
-	return "",nil,fmt.Errorf("未找到 %s",url)
+	return "", nil, fmt.Errorf("未找到 %s", url)
 }
+
 var fetcher = fakeFetcher{
 	"https://golang.org/": &fakeResult{
 		"The Go Programming Language",

@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"math"
-	"strings"
-	"time"
-	"os"
 	"image"
 	"image/color"
+	"io"
+	"math"
+	"os"
+	"strings"
+	"time"
 	"tour/pic"
 )
 
@@ -136,39 +136,44 @@ func _Sqrt(x _sqrt_value) (float64, error) {
 		return 0, _sqrt_value(x)
 	}
 }
+
 /***********/
 //**********rot13密码
-type _rot13_reader struct{
+type _rot13_reader struct {
 	r13 io.Reader
 }
-func _Rot13(b byte)byte{
-	switch{
-		case('A' <= b && b <= 'M')||('a' <= b && b<= 'm'):
+
+func _Rot13(b byte) byte {
+	switch {
+	case ('A' <= b && b <= 'M') || ('a' <= b && b <= 'm'):
 		b += 13
-		case('M' <= b && b <= 'Z')||('m' <= b && b<= 'z'):
+	case ('M' <= b && b <= 'Z') || ('m' <= b && b <= 'z'):
 		b -= 13
 	}
 	return b
 }
-func (r _rot13_reader)Read(b []byte)(int,error){
-	n,err := r.r13.Read(b)
-	for i := 0;i < n; i++{
+func (r _rot13_reader) Read(b []byte) (int, error) {
+	n, err := r.r13.Read(b)
+	for i := 0; i < n; i++ {
 		b[i] = _Rot13(b[i])
 	}
-	return n,err
+	return n, err
 }
+
 /**********/
 //**********图像
 type Image struct{}
-func (i Image)ColorModel() color.Model{
+
+func (i Image) ColorModel() color.Model {
 	return color.RGBAModel
 }
-func (i Image)Bounds()image.Rectangle{
-	return image.Rect(0,0,200,200)
+func (i Image) Bounds() image.Rectangle {
+	return image.Rect(0, 0, 200, 200)
 }
-func (i Image)At(x,y int)color.Color{
-	return color.RGBA{uint8(x),uint8(y),uint8(255),uint8(255)}
+func (i Image) At(x, y int) color.Color {
+	return color.RGBA{uint8(x), uint8(y), uint8(255), uint8(255)}
 }
+
 //**********
 
 func main() {
@@ -259,12 +264,12 @@ func main() {
 
 	my_reader2 := strings.NewReader("this is reader two!!")
 	rot13_reader := _rot13_reader{my_reader2}
-	io.Copy(os.Stdout,&rot13_reader)
+	io.Copy(os.Stdout, &rot13_reader)
 	fmt.Println()
 
-	img1 := image.NewRGBA(image.Rect(0,0,100,100))
+	img1 := image.NewRGBA(image.Rect(0, 0, 100, 100))
 	fmt.Println(img1.Bounds())
-	fmt.Println(img1.At(0,0).RGBA())
+	fmt.Println(img1.At(0, 0).RGBA())
 
 	img2 := Image{}
 	pic.ShowImage(img2)

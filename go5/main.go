@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"go5/tree"
 	"sync"
+	"time"
 )
 
 func _Say(s string) {
@@ -41,43 +41,45 @@ func _FibonacciSelect(c, quit chan int) {
 		}
 	}
 }
-func Walk(t *tree.Tree,c chan int){
+func Walk(t *tree.Tree, c chan int) {
 	//isLRempty = fales
-	if t == nil{
+	if t == nil {
 		return
 	}
-	if t.Left != nil{
-		Walk(t.Left,c)
+	if t.Left != nil {
+		Walk(t.Left, c)
 	}
 	c <- t.Value
-	if t.Right != nil{
-		Walk(t.Right,c)
+	if t.Right != nil {
+		Walk(t.Right, c)
 	}
 }
-func SameTree(t1,t2 *tree.Tree) bool{
-	c1 := make(chan int,10)
-	c2 := make(chan int,10)
+func SameTree(t1, t2 *tree.Tree) bool {
+	c1 := make(chan int, 10)
+	c2 := make(chan int, 10)
 	same := false
-	Walk(t1,c1)
-	Walk(t2,c2)
-	for x := 1;x <= len(c1);x++{
-		if(<- c1 != <- c2){
+	Walk(t1, c1)
+	Walk(t2, c2)
+	for x := 1; x <= len(c1); x++ {
+		if <-c1 != <-c2 {
 			break
 		}
 		same = true
 	}
 	return same
 }
-type SafeCounter struct{
-	v map[string]int
+
+type SafeCounter struct {
+	v   map[string]int
 	mux sync.Mutex
 }
-func (c *SafeCounter)Increase(key string){
+
+func (c *SafeCounter) Increase(key string) {
 	c.mux.Lock()
 	c.v[key]++
 	c.mux.Unlock()
 }
-func (c *SafeCounter) Value(key string)int{
+func (c *SafeCounter) Value(key string) int {
 	c.mux.Lock()
 	defer c.mux.Unlock()
 	return c.v[key]
@@ -149,7 +151,7 @@ func main() {
 			fmt.Println("滴...")
 			time.Sleep(50 * time.Millisecond)
 		}
-		if isboom{
+		if isboom {
 			break
 		}
 	}
@@ -159,12 +161,12 @@ func main() {
 	fmt.Printf("等价二叉查找树: ")
 	tree1 := tree.New(1)
 	tree2 := tree.New(2)
-	fmt.Println("",SameTree(tree1,tree2))
+	fmt.Println("", SameTree(tree1, tree2))
 
 	//互斥锁
 	fmt.Printf("互斥：")
-	c := SafeCounter{v:make(map[string]int)}
-	for i := 0; i <90;i++{
+	c := SafeCounter{v: make(map[string]int)}
+	for i := 0; i < 90; i++ {
 		go c.Increase("xxx")
 	}
 	time.Sleep(time.Second)
