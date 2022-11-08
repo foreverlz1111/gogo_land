@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--  使用版本 tailwindcss /3.2.1-->
+
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+</head>
+<body>
+<header>
+    {{template "header" .header}}
+</header>
+<main>
+    {{template "exhibition" }}
+
+</main>
+<footer>
+    {{template "footer" .footer}}
+</footer>
+</body>
+</html>
