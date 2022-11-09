@@ -4,11 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.js"></script>
+    <script>
+        function f() {
+            fetch('http://127.0.0.1:3000/u', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"id": 78912})
+            })
+                .then(response => response.json())
+                .then(() => location.reload())
+                .then(response => console.log(JSON.stringify(response)))
+        }
+        function go(isdir,cur,name) {
+            if (isdir){
+                console.log(isdir);
+                $.ajax({
+                    type: "POST",
+                    url: "http://127.0.0.1:3000/u",
+                    data: JSON.stringify({ "Cur": cur, "Name" : name }),
+                    contentType: "application/json",
+                    success: function (result) {
+                        console.log(result);
+                        location.reload();
+                    },
+                    error: function (result, status) {
+                        console.log(result);
+                    }
+                });
+            }
+            else {
+                window.open(cur+name)
+            }
+
+        }
+    </script>
 </head>
 <body class="ml-4 mr-4">
 
-<p class="font-bold mb-2 text-xl">当前目录：</p>
+<p class="font-bold mb-2 text-xl">当前目录：{{.Cur}}</p>
+<!--<iframe class="w-100" src="http://127.0.0.1:3000/files" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals">-->
+<!--</iframe>-->
+<!--<button onclick="f()">c</button>-->
 
+<table class="rounded-xl border-collapse table-fixed w-full text-sm border-collapse w-full border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-800 text-sm shadow-sm hover:border-spacing-2">
+    <thead class="bg-slate-50 dark:bg-slate-700">
+    <tr>
+        <th class=" border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">
+            文件名称
+        </th>
+
+        <th class=" border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">
+            文件大小
+        </th>
+        <th class=" border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">
+            修改日期
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {{$Cur := .Cur}}
+    {{range .Files}}
+    <tr class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400 hover:bg-gray-200 font-md">
+        <td {{if .IsDir}} class="text-slate-900"{{else}} class="text-sky-500" {{end}}> <button onclick="go({{.IsDir}},{{$Cur}},{{.Name}})"><span>{{.Name}}</span></button></td>
+        <td> {{if .IsDir}} 目录 {{else}}{{.Size}}{{end}}</td>
+        <td> {{.ModifiedTime}}</td>
+    </tr>
+    {{end}}
+    </tbody>
+</table>
 </body>
 </html>
 {{end}}

@@ -12,7 +12,9 @@ import (
 	"github.com/gofiber/template/html"
 	"log"
 	"main.go/data"
+	"main.go/responder"
 	"os"
+	"time"
 )
 
 func _init_log(app *fiber.App) *os.File {
@@ -29,18 +31,25 @@ func _init_log(app *fiber.App) *os.File {
 }
 func _init_dir(app *fiber.App) {
 	app.Static("/", "./files", fiber.Static{
-		//Browse: true,
-		//Download: true,
+		Compress:  true,
+		ByteRange: true,
+		//Browse:        true,
+		CacheDuration: 10 * time.Second,
+		MaxAge:        3600,
 	})
 	// http://localhost:3000/hello.txt
 }
 func _init_view(app *fiber.App) {
 	//绑定数据至图层
-	data.Index(app)
+	app.Use(data.Index)
+}
 
+func _init_respond(app *fiber.App) {
+	//绑定路由
+	app.Get("/", responder.ListDir)
+	app.Post("/u", responder.Update_exhibition)
 }
 func main() {
-
 	engine := html.New("./views", ".html")
 	app := fiber.New(fiber.Config{
 		Views: engine,
@@ -50,7 +59,11 @@ func main() {
 	defer logfile.Close()
 
 	_init_dir(app)
+
 	_init_view(app)
+
+	_init_respond(app)
+
 	log.Fatal(app.Listen(":3000"))
 }
 

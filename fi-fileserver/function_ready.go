@@ -19,7 +19,6 @@ func bmgt(int642 int64) string {
 	case int642 < int64(1024*1024*1024*1024):
 		return strconv.FormatInt(int64(int642/1024/1024/1024), 10) + "GB"
 	}
-
 }
 func main() {
 
