@@ -47,7 +47,7 @@ func _init_view(app *fiber.App) {
 func _init_respond(app *fiber.App) {
 	//绑定路由
 	app.Get("/", responder.ListDir)
-	app.Post("/u", responder.Update_exhibition)
+	app.Post("/u", responder.UpdateExhibition)
 }
 func main() {
 	engine := html.New("./views", ".html")

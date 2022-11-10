@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"log"
+	"path/filepath"
 	"strconv"
 )
 
@@ -21,14 +21,19 @@ func bmgt(int642 int64) string {
 	}
 }
 func main() {
-
-	fmt.Println("test:")
-	cur, _ := os.Getwd()
-	entry, _ := os.ReadDir(cur)
-	for _, e := range entry {
-		t, _ := e.Info()
-		fmt.Println(e.Name(), bmgt(t.Size()), t.ModTime().Format("2006年01月02日 15:04:05"))
-
-		//os.Stat(e.Name())
-	}
+	//
+	//fmt.Println("test:")
+	//cur, _ := os.Getwd()
+	//entry, _ := os.ReadDir(cur)
+	//for _, e := range entry {
+	//	t, _ := e.Info()
+	//	fmt.Println(e.Name(), bmgt(t.Size()), t.ModTime().Format("2006年01月02日 15:04:05"))
+	//
+	//	//os.Stat(e.Name())
+	//}
+	cur := "/files/log/"
+	log.Println(filepath.Dir(cur))
+	log.Println(filepath.Split(cur))
+	log.Println(filepath.Base(cur))
+	log.Println(filepath.Dir(cur) - filepath.Base(cur))
 }

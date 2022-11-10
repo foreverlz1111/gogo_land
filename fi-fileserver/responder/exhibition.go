@@ -24,34 +24,77 @@ func bmgt(int642 int64) string {
 		return strconv.FormatInt(int64(int642/1024/1024/1024), 10) + "GB"
 	}
 }
+
 func ListDir(c *fiber.Ctx) error {
 	log.Println("from responder.ListDir:")
-	if structure.MyDirEntry.Pointer == "" {
+	if IsRoot(structure.MyDirEntry.Pointer) {
+		return c.Render("index", fiber.Map{})
+	} else if IsEmpty(structure.MyDirEntry.Pointer) {
 		structure.MyDirEntry.Pointer, _ = os.Getwd()
 		structure.MyDirEntry.Pointer += "/files/"
 		structure.MyDirEntry.Cur = "/"
-		dir, err := os.ReadDir(structure.MyDirEntry.Pointer)
+		err := Readdir(c, structure.MyDirEntry.Pointer)
 		if err != nil {
 			return err
 		}
-		structure.MyDirEntry.Files = nil
-		for _, v := range dir {
-			t, _ := v.Info()
-			file := structure.File{v.Name(), v.IsDir(), bmgt(t.Size()), t.ModTime().Format("2006年01月02日 15:04:05")}
-			structure.MyDirEntry.Files = append(structure.MyDirEntry.Files, file)
-		}
-		log.Println(structure.MyDirEntry)
-		log.Println("structure.MyDirEntry.Pointer", structure.MyDirEntry.Pointer)
-		log.Println("from responder.ListDir [end]")
-		c.Bind(fiber.Map{
-			"dir": structure.MyDirEntry,
-		})
-		c.Next()
 	}
+	log.Println("from responder.ListDir [end]")
 	return c.Render("index", fiber.Map{})
 }
-func Update_exhibition(c *fiber.Ctx) error {
-	log.Println("from Update_exhibition")
+
+func PreviousDir(c *fiber.Ctx) error {
+	var body = c.Body()
+	var s interface{}
+	err := json.Unmarshal(body, &s)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+	m := s.(map[string]interface{})
+	cur := fmt.Sprintf("%v", m["Cur"])
+	if cur == "/" {
+
+	}
+	return nil
+
+}
+
+func IsRoot(pointer string) bool {
+	temp, _ := os.Getwd()
+	if pointer == temp+"/files/" {
+		return true
+	}
+	return false
+}
+
+func Readdir(c *fiber.Ctx, pointer string) error {
+	dir, err := os.ReadDir(structure.MyDirEntry.Pointer)
+	if err != nil {
+		return err
+	}
+	structure.MyDirEntry.Files = nil
+	for _, v := range dir {
+		t, _ := v.Info()
+		file := structure.File{v.Name(), v.IsDir(), bmgt(t.Size()), t.ModTime().Format("2006年01月02日 15:04:05")}
+		structure.MyDirEntry.Files = append(structure.MyDirEntry.Files, file)
+	}
+	log.Println(structure.MyDirEntry)
+	c.Bind(fiber.Map{
+		"dir": structure.MyDirEntry,
+	})
+	c.Next()
+	return nil
+}
+
+func IsEmpty(pointer string) bool {
+	if pointer == "" {
+		return true
+	}
+	return false
+}
+
+func UpdateExhibition(c *fiber.Ctx) error {
+	log.Println("from responder.UpdateExhibition")
 	var body = c.Body()
 	var s interface{}
 	err := json.Unmarshal(body, &s)
@@ -65,22 +108,10 @@ func Update_exhibition(c *fiber.Ctx) error {
 	structure.MyDirEntry.Cur += Next
 	structure.MyDirEntry.Pointer += Next
 	log.Println("structure.MyDirEntry.Cur", structure.MyDirEntry.Cur)
-	dir, err := os.ReadDir(structure.MyDirEntry.Pointer)
+	err = Readdir(c, structure.MyDirEntry.Pointer)
 	if err != nil {
-		return c.Status(200).JSON(err)
+		return c.Status(400).JSON(err)
 	}
-	structure.MyDirEntry.Files = nil
-	for _, v := range dir {
-		t, _ := v.Info()
-		file := structure.File{v.Name(), v.IsDir(), bmgt(t.Size()), t.ModTime().Format("2006年01月02日 15:04:05")}
-		structure.MyDirEntry.Files = append(structure.MyDirEntry.Files, file)
-	}
-	log.Println(structure.MyDirEntry)
-	log.Println("structure.MyDirEntry.Pointer", structure.MyDirEntry.Pointer)
-	c.Bind(fiber.Map{
-		"dir": structure.MyDirEntry,
-	})
-	c.Next()
-	log.Println("from Update_exhibition [end]")
+	log.Println("from responder.UpdateExhibition [end]")
 	return c.Status(200).JSON(nil)
 }
