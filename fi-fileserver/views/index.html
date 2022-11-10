@@ -5,17 +5,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!--  使用版本 tailwindcss /3.2.1-->
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!--    CDN图标-->
+
     <meta charset="UTF-8">
-    <title>{{.Title}}</title>
+    <title>文件预览：{{.dir.Cur}}</title>
 </head>
 <body>
 <header>
     {{template "header" .header}}
 </header>
 <main>
-
+    {{.}}
     {{template "exhibition" .dir}}
-
 </main>
 <footer>
     {{template "footer" .footer}}

@@ -31,9 +31,11 @@ func main() {
 	//
 	//	//os.Stat(e.Name())
 	//}
-	cur := "/files/log/"
-	log.Println(filepath.Dir(cur))
-	log.Println(filepath.Split(cur))
-	log.Println(filepath.Base(cur))
-	log.Println(filepath.Dir(cur) - filepath.Base(cur))
+
+	cur := "/home/sakurinn/project/go/fi-fileserver/files/log"
+	if c := filepath.Dir(filepath.Clean(cur)); c != "/" {
+		log.Println(c + "/")
+	} else {
+		log.Println(c)
+	}
 }

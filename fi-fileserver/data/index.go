@@ -8,13 +8,10 @@ import (
 
 func Index(c *fiber.Ctx) error {
 	log.Println("from data.Index")
-	err := c.Bind(fiber.Map{
+	c.Bind(fiber.Map{
 		"header": structure.Myheader,
-		"dir":    structure.MyDirEntry,
 		"footer": structure.Myfooter,
 	})
-	if err != nil {
-		return err
-	}
-	return c.Next()
+	c.Next()
+	return nil
 }

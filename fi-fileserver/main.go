@@ -39,15 +39,12 @@ func _init_dir(app *fiber.App) {
 	})
 	// http://localhost:3000/hello.txt
 }
-func _init_view(app *fiber.App) {
-	//绑定数据至图层
-	app.Use(data.Index)
-}
 
 func _init_respond(app *fiber.App) {
 	//绑定路由
 	app.Get("/", responder.ListDir)
 	app.Post("/u", responder.UpdateExhibition)
+	app.Post("/p", responder.PreviousDir)
 }
 func main() {
 	engine := html.New("./views", ".html")
@@ -60,7 +57,7 @@ func main() {
 
 	_init_dir(app)
 
-	_init_view(app)
+	app.Use(data.Index) //绑定数据至图层
 
 	_init_respond(app)
 

@@ -7,8 +7,8 @@ type File struct {
 	ModifiedTime string
 }
 type DirEntry struct {
-	Pointer string
-	Cur     string
+	Pointer string //物理地址
+	Cur     string //显示地址
 	Files   []File
 }
 

@@ -6,8 +6,23 @@
     <title>Title</title>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.js"></script>
     <script>
+        // window.addEventListener("load", init);
+        // function init() {
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "/i",
+        //         contentType: "application/json",
+        //         success: function (result) {
+        //             console.log(result);
+        //             window.reload();
+        //         },
+        //         error: function (result, status) {
+        //             console.log(result);
+        //         }
+        //     });
+        // }
         function f() {
-            fetch('http://127.0.0.1:3000/u', {
+            fetch('/u', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -19,17 +34,17 @@
                 .then(() => location.reload())
                 .then(response => console.log(JSON.stringify(response)))
         }
-        function go(isdir,cur,name) {
+        function go(isdir,poi,cur,name) {
+            console.log("isdir",isdir);
             if (isdir){
-                console.log(isdir);
                 $.ajax({
-                    type: "POST",
-                    url: "http://127.0.0.1:3000/u",
-                    data: JSON.stringify({ "Cur": cur, "Name" : name }),
+                    type: "get",
+                    url: "/",
+                    data: JSON.stringify({ "Poi":poi,"Cur": cur, "Name" : name }),
                     contentType: "application/json",
                     success: function (result) {
                         console.log(result);
-                        location.reload();
+                        // location.reload();
                     },
                     error: function (result, status) {
                         console.log(result);
@@ -39,13 +54,29 @@
             else {
                 window.open(cur+name)
             }
-
         }
+        function pre(poi,cur) {
+            console.log("上一页");
+            $.ajax({
+                type: "POST",
+                url: "/p",
+                data: JSON.stringify({ "poi":poi,"Cur": cur }),
+                contentType: "application/json",
+                success: function (result) {
+                    console.log(result);
+                    location.reload();
+                },
+                error: function (result, status) {
+                    console.log(result);
+                }
+            });
+        }
+
     </script>
 </head>
 <body class="ml-4 mr-4">
 
-<p class="font-bold mb-2 text-xl">当前目录：{{.Cur}} <button class="text-md text-white bg-sky-700 hover:bg-sky-500 rounded-md">返回上层</button></p>
+<p class="font-bold mb-2 text-xl">当前目录：{{.Cur}} {{if not (eq .Cur "/")}}<button onclick="pre()" class="text-md text-white bg-sky-700 hover:bg-sky-500 rounded-md"><i class="bi bi-arrow-left text-xs ml-2"></i><span class="text-xs px-2">返回上层</span></button>{{end}}</p>
 <!--<iframe class="w-100" src="http://127.0.0.1:3000/files" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals">-->
 <!--</iframe>-->
 <!--<button onclick="f()">c</button>-->
@@ -57,19 +88,21 @@
             文件名称
         </th>
 
-        <th class=" border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">
+        <th class="w-1/4 border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">
             文件大小
         </th>
-        <th class=" border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">
+        <th class="w-1/4 border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">
             修改日期
         </th>
     </tr>
     </thead>
     <tbody>
     {{$Cur := .Cur}}
+    {{$Poi := .Pointer}}
+
     {{range .Files}}
     <tr class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400 hover:bg-gray-200 font-md">
-        <td {{if .IsDir}} class="text-slate-900"{{else}} class="text-sky-500" {{end}}> <button onclick="go({{.IsDir}},{{$Cur}},{{.Name}})"><span>{{.Name}}</span></button></td>
+        <td {{if .IsDir}} class="text-slate-900 border"{{else}} class="text-sky-500 border" {{end}}> <button onclick="go({{.IsDir}},{{$Poi}},{{$Cur}},{{.Name}})"><span>{{.Name}}</span></button></td>
         <td> {{if .IsDir}} 目录 {{else}}{{.Size}}{{end}}</td>
         <td> {{.ModifiedTime}}</td>
     </tr>
