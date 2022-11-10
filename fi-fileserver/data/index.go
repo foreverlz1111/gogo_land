@@ -12,6 +12,5 @@ func Index(c *fiber.Ctx) error {
 		"header": structure.Myheader,
 		"footer": structure.Myfooter,
 	})
-	c.Next()
-	return nil
+	return c.Next()
 }

@@ -26,35 +26,15 @@ func bmgt(int642 int64) string {
 
 func ListDir(c *fiber.Ctx) error {
 	log.Println("from responder.ListDir:")
-	type Parser struct {
-		Poi  string `json:"Poi"`
-		Cur  string `json:"Cur"`
-		Name string `json:"Name"`
-	}
-	log.Println(c.Body())
-	parser := Parser{}
-	err := c.BodyParser(&parser)
-	log.Println("parser err", err)
+	poi, _ := os.Getwd()
+	poi += "/files/"
+	cur := "/"
+	err := Readdir(c, cur, poi)
 	if err != nil {
-		poi, _ := os.Getwd()
-		poi += "/files/"
-		cur := "/"
-		err = Readdir(c, cur, poi)
-		if err != nil {
-			return err
-		}
-		log.Println("from responder.ListDir [end]")
-		return nil
+		return err
 	}
-	parser.Poi += parser.Name + "/"
-	parser.Cur += parser.Name + "/"
-	log.Println("ListDir.parser.Poi", parser.Poi)
-	err = Readdir(c, parser.Cur, parser.Poi)
-	if err != nil {
-		return c.Status(400).JSON(err)
-	}
-	log.Println("ListDir [end]")
-	return c.Status(200).JSON(nil)
+	log.Println("from responder.ListDir [end]")
+	return err
 }
 
 func PreviousDir(c *fiber.Ctx) error {

@@ -48,6 +48,7 @@ func _init_respond(app *fiber.App) {
 }
 func main() {
 	engine := html.New("./views", ".html")
+	engine.Reload(true)
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
