@@ -1,6 +1,9 @@
 {{define "exhibition"}}
 <!DOCTYPE html>
 <html lang="en">
+{{$Cur := .Cur}}
+{{$Poi := .Pointer}}
+{{$Files := .Files}}
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -44,7 +47,8 @@
                     contentType: "application/json",
                     success: function (result) {
                         console.log(result);
-                        location.reload();
+
+                        //location.reload();
                     },
                     error: function (result, status) {
                         console.log(result);
@@ -97,12 +101,10 @@
     </tr>
     </thead>
     <tbody>
-    {{$Cur := .Cur}}
-    {{$Poi := .Pointer}}
 
-    {{range .Files}}
+    {{range $Files}}
     <tr class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400 hover:bg-gray-200 font-md">
-        <td {{if .IsDir}} class="text-slate-900 border"{{else}} class="text-sky-500 border" {{end}}> <button onclick="go({{.IsDir}},{{$Poi}},{{$Cur}},{{.Name}})"><span>{{.Name}}</span></button></td>
+        <td {{if .IsDir}} class="text-slate-900 border"{{else}} class="text-sky-500 border" {{end}}> <button onclick="go({{.IsDir}},{{$Poi}},{{$Cur}},{{.Name}})"><span>{{.Name}}</span></button></button></td>
         <td> {{if .IsDir}} 目录 {{else}}{{.Size}}{{end}}</td>
         <td> {{.ModifiedTime}}</td>
     </tr>

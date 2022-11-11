@@ -29,9 +29,17 @@ func ListDir(c *fiber.Ctx) error {
 	poi, _ := os.Getwd()
 	poi += "/files/"
 	cur := "/"
-	err := Readdir(c, cur, poi)
+	direntry := Readdir(c, cur, poi)
+	log.Println(direntry)
+	//dirs := structure.DirEntry{}
+	//file := structure.File{"发表的小论文", true, "4KB", "2022年11月10日 18:59:44"}
+	//dirs.Files = append(dirs.Files, file)
+	//dirs.Pointer = "/home/sakurinn/project/go/fi-fileserver/files/"
+	//dirs.Cur = "/"
+
+	err := c.Render("index", fiber.Map{"dir": direntry})
 	if err != nil {
-		return err
+		log.Fatal(err)
 	}
 	log.Println("from responder.ListDir [end]")
 	return err
@@ -46,10 +54,8 @@ func PreviousDir(c *fiber.Ctx) error {
 		structure.MyDirEntry.Pointer, _ = os.Getwd()
 		structure.MyDirEntry.Pointer += "/files/"
 	}
-	err := Readdir(c, "", structure.MyDirEntry.Pointer)
-	if err != nil {
-		return c.Status(400).JSON(err)
-	}
+	direntry := Readdir(c, "", structure.MyDirEntry.Pointer)
+	c.Render("index", fiber.Map{"dir": direntry})
 	return c.Status(200).JSON("OK")
 }
 
@@ -61,10 +67,10 @@ func IsRoot(pointer string) bool {
 	return false
 }
 
-func Readdir(c *fiber.Ctx, cur string, poi string) error {
+func Readdir(c *fiber.Ctx, cur string, poi string) structure.DirEntry {
 	dir, err := os.ReadDir(poi)
 	if err != nil {
-		return err
+		log.Fatal(err)
 	}
 	direntry := structure.DirEntry{}
 	direntry.Cur = cur
@@ -75,9 +81,7 @@ func Readdir(c *fiber.Ctx, cur string, poi string) error {
 		direntry.Files = append(direntry.Files, file)
 	}
 	log.Println("readdir:", direntry)
-	return c.Render("index", fiber.Map{
-		"dir": direntry,
-	})
+	return direntry
 }
 
 func IsEmpty(pointer string) bool {
@@ -102,12 +106,11 @@ func UpdateExhibition(c *fiber.Ctx) error {
 	parser.Poi += parser.Name + "/"
 	parser.Cur += parser.Name + "/"
 	log.Println("UpdateExhibition parser.Poi", parser.Poi)
-	err = Readdir(c, parser.Cur, parser.Poi)
-	if err != nil {
-		return c.Status(400).JSON(err)
-	}
+	direntry := Readdir(c, parser.Cur, parser.Poi)
+	c.Render("index", fiber.Map{"dir": direntry})
+
 	log.Println("from responder.UpdateExhibition [end]")
-	return c.Status(200).JSON(nil)
+	return c.Status(200).JSON(direntry)
 }
 func getbody() {
 	//var body = c.Body()
