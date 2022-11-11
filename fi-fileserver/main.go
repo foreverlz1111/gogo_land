@@ -42,7 +42,7 @@ func _init_dir(app *fiber.App) {
 
 func _init_respond(app *fiber.App) {
 	//绑定路由
-	app.Get("/", responder.ListDir)
+	//app.Get("/", responder.ListDir)
 	app.Post("/u", responder.UpdateExhibition)
 	app.Post("/p", responder.PreviousDir)
 }

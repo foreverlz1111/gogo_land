@@ -29,7 +29,7 @@ func ListDir(c *fiber.Ctx) error {
 	poi, _ := os.Getwd()
 	poi += "/files/"
 	cur := "/"
-	direntry := Readdir(c, cur, poi)
+	direntry := Readdir(cur, poi)
 	log.Println(direntry)
 	//dirs := structure.DirEntry{}
 	//file := structure.File{"发表的小论文", true, "4KB", "2022年11月10日 18:59:44"}
@@ -45,18 +45,27 @@ func ListDir(c *fiber.Ctx) error {
 	return err
 }
 
-func PreviousDir(c *fiber.Ctx) error {
-	if filepath.Dir(filepath.Clean(structure.MyDirEntry.Cur)) != "/" {
-		structure.MyDirEntry.Cur = filepath.Dir(filepath.Clean(structure.MyDirEntry.Cur)) + "/"
-		structure.MyDirEntry.Pointer = filepath.Dir(filepath.Clean(structure.MyDirEntry.Pointer)) + "/"
-	} else {
-		structure.MyDirEntry.Cur = "/"
-		structure.MyDirEntry.Pointer, _ = os.Getwd()
-		structure.MyDirEntry.Pointer += "/files/"
+func PreviousDir(c *fiber.Ctx) structure.DirEntry {
+	type Parser struct {
+		Poi  string `json:"Poi"`
+		Cur  string `json:"Cur"`
+		Name string `json:"Name"`
 	}
-	direntry := Readdir(c, "", structure.MyDirEntry.Pointer)
-	c.Render("index", fiber.Map{"dir": direntry})
-	return c.Status(200).JSON("OK")
+	parser := Parser{}
+	err := c.BodyParser(&parser)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if filepath.Dir(filepath.Clean(parser.Cur)) != "/" {
+		parser.Cur = filepath.Dir(filepath.Clean(parser.Cur)) + "/"
+		parser.Poi = filepath.Dir(filepath.Clean(parser.Poi)) + "/"
+	} else {
+		parser.Cur = "/"
+		parser.Poi, _ = os.Getwd()
+		parser.Poi += "/files/"
+	}
+	direntry := Readdir(parser.Cur, parser.Poi)
+	return direntry
 }
 
 func IsRoot(pointer string) bool {
@@ -67,7 +76,7 @@ func IsRoot(pointer string) bool {
 	return false
 }
 
-func Readdir(c *fiber.Ctx, cur string, poi string) structure.DirEntry {
+func Readdir(cur string, poi string) structure.DirEntry {
 	dir, err := os.ReadDir(poi)
 	if err != nil {
 		log.Fatal(err)
@@ -106,7 +115,7 @@ func UpdateExhibition(c *fiber.Ctx) error {
 	parser.Poi += parser.Name + "/"
 	parser.Cur += parser.Name + "/"
 	log.Println("UpdateExhibition parser.Poi", parser.Poi)
-	direntry := Readdir(c, parser.Cur, parser.Poi)
+	direntry := Readdir(parser.Cur, parser.Poi)
 	c.Render("index", fiber.Map{"dir": direntry})
 
 	log.Println("from responder.UpdateExhibition [end]")
