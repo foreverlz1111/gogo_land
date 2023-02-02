@@ -76,11 +76,9 @@
                 }
             });
         }
-
     </script>
 </head>
 <body class="ml-4 mr-4">
-
 <p class="font-bold mb-2 text-xl">当前目录：{{.Cur}} {{if not (eq .Cur "/")}}<button onclick="pre()" class="text-md text-white bg-sky-700 hover:bg-sky-500 rounded-md"><i class="bi bi-arrow-left text-xs ml-2"></i><span class="text-xs px-2">返回上层</span></button>{{end}}</p>
 <!--<iframe class="w-100" src="http://127.0.0.1:3000/files" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals">-->
 <!--</iframe>-->
@@ -112,7 +110,6 @@
     {{end}}
     </tbody>
 </table>
-
 </body>
 </html>
 {{end}}

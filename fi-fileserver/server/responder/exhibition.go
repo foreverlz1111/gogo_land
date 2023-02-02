@@ -36,16 +36,11 @@ func ListDir(c *fiber.Ctx) error {
 	//dirs.Files = append(dirs.Files, file)
 	//dirs.Pointer = "/home/sakurinn/project/go/fi-fileserver/files/"
 	//dirs.Cur = "/"
-
-	err := c.Render("index", fiber.Map{"dir": direntry})
-	if err != nil {
-		log.Fatal(err)
-	}
 	log.Println("from responder.ListDir [end]")
-	return err
+	return c.Status(200).JSON(direntry)
 }
 
-func PreviousDir(c *fiber.Ctx) structure.DirEntry {
+func PreviousDir(c *fiber.Ctx) error {
 	type Parser struct {
 		Poi  string `json:"Poi"`
 		Cur  string `json:"Cur"`
@@ -65,7 +60,7 @@ func PreviousDir(c *fiber.Ctx) structure.DirEntry {
 		parser.Poi += "/files/"
 	}
 	direntry := Readdir(parser.Cur, parser.Poi)
-	return direntry
+	return c.Status(200).JSON(direntry)
 }
 
 func IsRoot(pointer string) bool {

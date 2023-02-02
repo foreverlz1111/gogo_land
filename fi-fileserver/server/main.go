@@ -43,6 +43,7 @@ func _init_dir(app *fiber.App) {
 func _init_respond(app *fiber.App) {
 	//绑定路由
 	//app.Get("/", responder.ListDir)
+	app.Get("/g", responder.ListDir)
 	app.Post("/u", responder.UpdateExhibition)
 	app.Post("/p", responder.PreviousDir)
 }
@@ -62,7 +63,7 @@ func main() {
 
 	_init_respond(app)
 
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(":3001"))
 }
 
 //header-exi-shooter
