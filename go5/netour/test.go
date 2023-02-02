@@ -17,13 +17,18 @@ func main() {
 	fmt.Printf("hash = %#x\n", has.Sum32())
 	fmt.Println(time.Since(start))
 
-	read, err := http.Get("https://www.163.com")
+	respond, err := http.Get("https://www.163.com")
 	if err != nil {
 		fmt.Printf("%s\n", err)
 		fmt.Println(time.Since(start))
 		return
 	}
-	fmt.Println(read)
+	defer respond.Body.Close()
+	respondbody,err := io.ReadAll(respond.Body)
 	fmt.Println(time.Since(start))
+	fmt.Printf("%s",respondbody)
+	//	client := &http.Client{
+	//		CheckRedirect: redirectPolicyFunc,
+	//	}
 
 }
