@@ -13,7 +13,7 @@ function Footer() {
                     <div className="border-b border-teal-100 w-11/12 sm:max-w-5xl mx-auto text-black text-left ">
                         <p className="font-bold mb-4">To-Do:</p>
                         <ul className="list-disc list-inside">
-                            {todo.map(e => (<li>{e}</li>))}
+                            {todo.map((e,i) => (<li key={e}>{e}</li>))}
                         </ul>
                         <div
                             className="grid gap-4 grid-cols-3 text-sm sm:text-lg w-11/12 sm:max-w-5xl mx-auto text-sm sm:text-lg rounded-lg">
