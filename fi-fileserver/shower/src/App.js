@@ -57,7 +57,6 @@ function App() {
 
     return (
         <>
-
             <CurrentDir/>
             <CurrentTable/>
         </>
