@@ -4,44 +4,17 @@ import {GetTableBody} from "./requester";
 function App() {
     let isInitial = true
     // let dir_session = ""
-    let back_icon = "<"
-
-    // function GetMyData() {
-    //     const [test, setTest] = useState([])
-    //     const getDir = useCallback(async () => {
-    //         const res = await fetch("http://127.0.0.1:3001/g", {
-    //             method: "GET",
-    //             mode: "cors"
-    //         })
-    //         const resjson = await res.json()
-    //         setTest(resjson)
-    //         return resjson
-    //     }, [])
-    //     useEffect(() => {
-    //         let ignore = false
-    //         if(!ignore){
-    //             getDir()
-    //         }
-    //         return () => {
-    //             ignore = true
-    //         }
-    //     }, [getDir])
-    //     return (
-    //         <>
-    //             {test.Pointer}
-    //         </>
-    //     )
-    // }
+    let back_icon = (<>&#x2B05;</>)
 
     function CurrentDir() {
         return (
             <p className="font-bold mb-2 text-xl">当前目录：
                 {isInitial ? "/" : ""}
-                <button className="ml-2 text-md text-white bg-sky-700 hover:bg-sky-500 rounded-md">
-                    <i className="bi bi-arrow-bar-left text-sm">
+                <button className="ml-2 text-md text-white bg-sky-700 hover:bg-sky-500 rounded-md px-2">
+                    <i className="text-sm">
                         {back_icon}
                     </i>
-                    <span className="text-xs px-2">
+                    <span className="text-sm">
                         返回上层
                     </span>
                 </button>
