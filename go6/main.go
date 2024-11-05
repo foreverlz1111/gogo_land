@@ -2,7 +2,7 @@ package main
 
 import "log"
 
-// 冒排 for两次，第二曾每次都减少
+// 冒排 for两次，第二层每次都减少
 func Buble(myarray []int) []int {
 	for i := 0; i < len(myarray); i++ {
 		for j := i + 1; j < len(myarray); j++ {

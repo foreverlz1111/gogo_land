@@ -19,6 +19,12 @@ go version
 go run main.go
 ```
 
+**Go 语言不支持动态链接,因此编译时会将所有依赖编译进同一个二进制文件：**
+
+```aiignore
+go build -o main
+```
+
 **翻译自[Go 网站](https://tour.go-zh.org)**
 
 # 文件夹
@@ -45,4 +51,10 @@ go run main.go
 - [go6](https://github.com/foreverlz1111/gogo_land/tree/main/go6)-
 `
 排序算法
+`
+
+
+- [进阶知识](https://github.com/foreverlz1111/gogo_land/tree/main/go6)-
+`
+易错知识点
 `
