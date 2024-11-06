@@ -15,7 +15,7 @@ func Buble(myarray []int) []int {
 }
 
 // 插入排序，遍历每个，最小的放入前一列；重复
-func Inseting(myarray []int) []int {
+func Inserting(myarray []int) []int {
 	// 从第头开始
 	for i := range myarray {
 		last_index := i - 1

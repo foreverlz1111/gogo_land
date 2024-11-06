@@ -13,7 +13,7 @@ type Person struct {
 func main() {
 	person := new(Person)
 	log.Println(person)
-	// unsafe.Pointer 不参与运算
+	// unsafe.Pointer： GO的指针地址不参与运算
 	age := unsafe.Pointer(uintptr(unsafe.Pointer(person)) + unsafe.Offsetof(person.age))
 	name := unsafe.Pointer(uintptr(unsafe.Pointer(person)) + unsafe.Offsetof(person.name))
 	*((*int)(age)) = 10

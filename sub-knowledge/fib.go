@@ -14,5 +14,5 @@ func fib(n int) int {
 	return c
 }
 func main() {
-	fmt.Printf("%d", fib(5))
+	fmt.Printf("%d", fib(10))
 }
