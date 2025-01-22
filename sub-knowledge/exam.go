@@ -28,6 +28,8 @@ func maxAscendingSum(nums []int) int {
 	}
 	return sum
 }
+
+// 好未来随机笔试
 func twoSum(nums []int, target int) []int {
 	for i := 0; i < len(nums); i++ {
 		for j := i + 1; j < len(nums); j++ {
