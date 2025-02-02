@@ -1,4 +1,6 @@
-package set
+package main
+
+import "log"
 
 //1. 两数之和
 //给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。
@@ -23,7 +25,7 @@ package set
 //输入：nums = [3,3], target = 6
 //输出：[0,1]
 
-func Set1(nums []int, target int) []int {
+func twoSum(nums []int, target int) []int {
 	for i := 0; i < len(nums); i++ {
 		for j := i + 1; j < len(nums); j++ {
 			if nums[i]+nums[j] == target {
@@ -32,4 +34,9 @@ func Set1(nums []int, target int) []int {
 		}
 	}
 	return []int{}
+}
+func main() {
+
+	log.Println(twoSum([]int{2, 7, 11, 15}, 18))
+
 }

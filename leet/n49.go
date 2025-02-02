@@ -1,4 +1,6 @@
-package set
+package main
+
+import "log"
 
 //49. 字母异位词分组
 //
@@ -23,8 +25,15 @@ package set
 
 // 注意的问题：避免重复遍历
 
-func Set2(strs []string) [][]string {
+func groupAnagrams(strs []string) [][]string {
 	arr := make([][]string, 0)
-
+	for len(strs) > 0 {
+		strs = strs[0 : len(strs)-1]
+	}
 	return arr
+}
+func main() {
+
+	log.Println(groupAnagrams([]string{"eat", "tea", "tan", "ate", "nat", "bat"}))
+
 }
