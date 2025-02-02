@@ -26,14 +26,38 @@ import "log"
 // 注意的问题：避免重复遍历
 
 func groupAnagrams(strs []string) [][]string {
+	mymap := map[rune]int{
+		'a': 2, 'b': 3, 'c': 5, 'd': 7, 'e': 11, 'f': 13, 'g': 17, 'h': 19,
+		'i': 23, 'j': 29, 'k': 31, 'l': 37, 'm': 41, 'n': 43, 'o': 47, 'p': 53,
+		'q': 59, 'r': 61, 's': 67, 't': 71, 'u': 73, 'v': 79, 'w': 83, 'x': 89,
+		'y': 97, 'z': 101,
+	}
+
 	arr := make([][]string, 0)
-	for len(strs) > 0 {
-		strs = strs[0 : len(strs)-1]
+	if len(strs) == 0 {
+		arr = append(arr, []string{})
+		return arr
+	} else if len(strs) == 1 {
+		arr = append(arr, []string{strs[0]})
+		return arr
+	} else {
+		mymap_number := map[int][]string{}
+		for _, str := range strs {
+			key := 1
+			for _, s := range str {
+				key *= mymap[s]
+			}
+			mymap_number[key] = append(mymap_number[key], str)
+		}
+		for _, v := range mymap_number {
+			arr = append(arr, v)
+		}
 	}
 	return arr
 }
 func main() {
-
+	log.Println(groupAnagrams([]string{}))
+	log.Println(groupAnagrams([]string{"one"}))
 	log.Println(groupAnagrams([]string{"eat", "tea", "tan", "ate", "nat", "bat"}))
 
 }
