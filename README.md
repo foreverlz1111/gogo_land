@@ -1,7 +1,7 @@
 # 安装
-从[[官网](https://golang.org )]下载对应系统的tar.gz包
+从[[官网下载页面](https://go.dev/dl/)]获取对应系统的二进制包，
 
-解压包内文件到usr/local/go然后添加用户变量：
+解压包内文件到/usr/local/go/然后添加用户变量：
 
 ```
 echo export PATH=$PATH:/usr/local/go/bin >> ~/.bashrc
@@ -13,19 +13,35 @@ echo export PATH=$PATH:/usr/local/go/bin >> ~/.bashrc
 go version
 ```
 
-运行代码
+运行代码：
 
 ```
 go run main.go
 ```
 
-**Go 语言不支持动态链接,因此编译时会将所有依赖编译进同一个二进制文件：**
+**Go 语言不支持动态链接，因此编译时会将所有依赖编译进同一个二进制文件：**
 
-```aiignore
-go build -o main
+```
+go build -o main main.go
 ```
 
-**翻译自[Go 网站](https://tour.go-zh.org)**
+**交叉编译（示例）：**
+
+|GOOS |GOARCH | 
+|-|-|
+|linux | amd64|
+|linux | arm64|
+|freebsd | amd64|
+|freebsd | arm64|
+|darwin | amd64|
+|darwin | arm64|
+|...|[更多](https://gist.github.com/asukakenji/f15ba7e588ac42795f421b48b8aede63)|
+ 
+```
+GOOS=linux GOARCH=amd64 go build -o myprogram main.go
+``` 
+
+---
 
 # 文件夹
 - [go1](https://github.com/foreverlz1111/gogo_land/tree/main/go1)-
@@ -44,17 +60,20 @@ go build -o main
 `
 方法和接口
 `
+
 - [go5](https://github.com/foreverlz1111/gogo_land/tree/main/go5)-
 `
 并发
 `
+
 - [go6](https://github.com/foreverlz1111/gogo_land/tree/main/go6)-
 `
 排序算法
 `
 
+- [leet](https://github.com/foreverlz1111/gogo_land/tree/main/leet)- code
 
-- [进阶知识](https://github.com/foreverlz1111/gogo_land/tree/main/go6)-
+- [sub-knowledge](https://github.com/foreverlz1111/gogo_land/tree/main/sub-knowledge)-
 `
-易错知识点
+课外知识
 `
