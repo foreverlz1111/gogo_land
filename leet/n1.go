@@ -35,8 +35,17 @@ func twoSum(nums []int, target int) []int {
 	}
 	return []int{}
 }
+func twoSum2(nums []int, target int) []int {
+	m := make(map[int]int)
+	for index, val := range nums {
+		if preIndex, ok := m[target-val]; ok {
+			return []int{preIndex, index}
+		} else {
+			m[val] = index
+		}
+	}
+	return []int{}
+}
 func main() {
-
 	log.Println(twoSum([]int{2, 7, 11, 15}, 18))
-
 }
