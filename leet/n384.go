@@ -44,6 +44,6 @@ func canConstruct(ransomNote string, magazine string) bool {
 	return true
 }
 func main() {
-	str1, str2 := "aacc", "aab"
+	str1, str2 := "aa", "aab"
 	log.Println(canConstruct(str1, str2))
 }
