@@ -23,10 +23,11 @@ func generateMatrix(n int) [][]int {
 	for i := 0; i < n; i++ {
 		matrix[i] = make([]int, n)
 	}
-	step := n - 1
-	loop := n / 2
-	opp := 0
-	count := 1
+	step := n - 1 //每一个边框走的步数
+	loop := n / 2 //圈数
+	opp := 0      //控制圈的深度
+	count := 1    // 计数
+	// matrix[行][列] 分别填充
 	for ; loop > 0; loop-- {
 		for i := opp; i < step+opp; i++ {
 			matrix[opp][i] = count
@@ -34,13 +35,12 @@ func generateMatrix(n int) [][]int {
 		} //up
 
 		for i := opp; i < step+opp; i++ {
-			matrix[i][n-1-opp] = count
-
+			matrix[i][n-opp-1] = count
 			count++
 		} //right
 
 		for i := step + opp; i > opp; i-- {
-			matrix[n-1-opp][i] = count
+			matrix[n-opp-1][i] = count
 			count++
 		} //bottom
 
