@@ -53,7 +53,7 @@ type MyLinkedList struct {
 	single *SingleNode
 }
 
-func Constructor() MyLinkedList {
+func constructor() MyLinkedList {
 	// 虚拟头是 {0, nil}
 	return MyLinkedList{0, &SingleNode{}}
 }
@@ -113,7 +113,7 @@ func (this *MyLinkedList) DeleteAtIndex(index int) {
 }
 func main() {
 
-	mychain := Constructor()
+	mychain := constructor()
 
 	mychain.AddAtHead(4)
 	mychain.AddAtHead(3)
