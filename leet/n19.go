@@ -1,6 +1,7 @@
 package main
 
 import (
+	"leet/util"
 	"log"
 )
 
@@ -33,12 +34,7 @@ import (
 //0 <= Node.val <= 100
 //1 <= n <= sz
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
-func removeNthFromEnd(head *ListNode, n int) *ListNode {
+func removeNthFromEnd(head *util.ListNode, n int) *util.ListNode {
 	fast := head
 	slow := head
 	for i := 0; i <= n; i++ {
@@ -52,10 +48,10 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 	return head
 }
 func main() {
-	head := &ListNode{}
+	head := &util.ListNode{}
 	cur := head
 	for i := 1; i < 5; i++ {
-		cur.Next = &ListNode{Val: i}
+		cur.Next = &util.ListNode{Val: i}
 		cur = cur.Next
 	}
 

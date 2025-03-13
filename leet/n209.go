@@ -36,10 +36,11 @@ import "log"
 func minSubArrayLen(target int, nums []int) int {
 	sum := 0
 	i := 0
-	result := len(nums) + 1
+	result := len(nums) + 1 // 最大数组长度
 	for j := 0; j < len(nums); j++ {
 		sum += nums[j]
 		for sum >= target {
+			//滑动窗口
 			sub_result := j - i + 1
 			if sub_result < result {
 				result = sub_result

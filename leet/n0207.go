@@ -1,6 +1,7 @@
 package main
 
 import (
+	"leet/util"
 	"log"
 	"math"
 )
@@ -59,12 +60,7 @@ import (
 //如果 listA 和 listB 没有交点，intersectVal 为 0
 //如果 listA 和 listB 有交点，intersectVal == listA[skipA + 1] == listB[skipB + 1]
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
-func getIntersectionNode(headA, headB *ListNode) *ListNode {
+func getIntersectionNode(headA, headB *util.ListNode) *util.ListNode {
 	lenA, lenB := 0, 0
 	cur := headA.Next
 	for cur != nil {
@@ -96,14 +92,14 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 		}
 	}
 
-	return &ListNode{}
+	return &util.ListNode{}
 }
 func main() {
-	headA := &ListNode{}
-	headB := &ListNode{}
+	headA := &util.ListNode{}
+	headB := &util.ListNode{}
 	cur := headA
 	for i := 1; i < 8; i++ {
-		cur.Next = &ListNode{i, nil}
+		cur.Next = &util.ListNode{i, nil}
 		cur = cur.Next
 	}
 	cur = headA

@@ -1,6 +1,9 @@
 package main
 
-import "log"
+import (
+	"leet/util"
+	"log"
+)
 
 //206. 反转链表
 //简单
@@ -30,14 +33,9 @@ import "log"
 //链表中节点的数目范围是 [0, 5000]
 //-5000 <= Node.val <= 5000
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
-func reverseList(head *ListNode) *ListNode {
+func reverseList(head *util.ListNode) *util.ListNode {
 	cur := head.Next
-	var pre *ListNode
+	var pre *util.ListNode
 
 	for cur != nil {
 		tmp := cur.Next
@@ -48,10 +46,10 @@ func reverseList(head *ListNode) *ListNode {
 	return pre
 }
 func main() {
-	head := &ListNode{0, &ListNode{}}
+	head := &util.ListNode{0, &util.ListNode{}}
 	cur := head
 	for i := 1; i < 9; i++ {
-		cur.Next = &ListNode{i, nil}
+		cur.Next = &util.ListNode{i, nil}
 		cur = cur.Next
 	}
 

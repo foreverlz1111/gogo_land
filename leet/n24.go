@@ -1,6 +1,9 @@
 package main
 
-import "log"
+import (
+	"leet/util"
+	"log"
+)
 
 // 24. 两两交换链表中的节点
 // 中等
@@ -24,12 +27,7 @@ import "log"
 // 链表中节点的数目在范围 [0, 100] 内
 // 0 <= Node.val <= 100
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
-func swapPairs(head *ListNode) *ListNode {
+func swapPairs(head *util.ListNode) *util.ListNode {
 	cur := head // head is vhead
 	for cur.Next != nil && cur.Next.Next != nil {
 		tmp1 := cur.Next
@@ -43,10 +41,10 @@ func swapPairs(head *ListNode) *ListNode {
 }
 
 func main() {
-	head := &ListNode{}
+	head := &util.ListNode{}
 	cur := head
 	for i := 1; i < 9; i++ {
-		cur.Next = &ListNode{Val: i}
+		cur.Next = &util.ListNode{Val: i}
 		cur = cur.Next
 	}
 

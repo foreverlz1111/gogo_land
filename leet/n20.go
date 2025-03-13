@@ -1,6 +1,7 @@
 package main
 
 import (
+	"leet/util"
 	"log"
 )
 
@@ -43,35 +44,13 @@ import (
 //
 // 1 <= s.length <= 104
 // s仅由括号 '()[]{}' 组成
-type MyStack []string
 
-func (s *MyStack) Push(x string) {
-	// 入栈
-	*s = append(*s, x)
-}
-func (s *MyStack) Pop() string {
-	// 出栈
-	l := len(*s)
-	v := (*s)[l-1]
-	*s = (*s)[:l-1]
-	return v
-}
-func (s *MyStack) Top() string {
-	// peek 栈首
-	l := len(*s)
-	v := (*s)[l-1]
-	return v
-}
-
-func (s *MyStack) Empty() bool {
-	return len(*s) == 0
-}
 func isValid(s string) bool {
 	if len(s)%2 != 0 {
 		return false
 	}
 
-	stacks := MyStack{}
+	stacks := util.MyStrStack{}
 	for _, ch := range s {
 		if ch == '(' {
 			stacks.Push(")")

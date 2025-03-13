@@ -1,6 +1,7 @@
 package main
 
 import (
+	"leet/util"
 	"log"
 )
 
@@ -44,15 +45,10 @@ import (
 //-105 <= Node.val <= 105
 //pos 的值为 -1 或者链表中的一个有效索引
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
 // 起点到入口为x,入口到相遇点为y,相遇点到入口为z
 // 因为快指针和满指针分别走2和1格
 // 得到一个等式 2(x+y) = x+y+n(y+z)
-func detectCycle(head *ListNode) *ListNode {
+func detectCycle(head *util.ListNode) *util.ListNode {
 	fast := head.Next
 	slow := head.Next
 	for fast.Next != nil && fast.Next.Next != nil {
@@ -71,11 +67,11 @@ func detectCycle(head *ListNode) *ListNode {
 	return nil
 }
 func main() {
-	head := &ListNode{}
+	head := &util.ListNode{}
 	cur := head
-	start_node := &ListNode{}
+	start_node := &util.ListNode{}
 	for i := 1; i < 19; i++ {
-		cur.Next = &ListNode{Val: i}
+		cur.Next = &util.ListNode{Val: i}
 		if i == 15 {
 			start_node = cur.Next
 		}

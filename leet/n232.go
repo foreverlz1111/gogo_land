@@ -1,6 +1,9 @@
 package main
 
-import "log"
+import (
+	"leet/util"
+	"log"
+)
 
 // 232. 用栈实现队列
 // 简单
@@ -42,39 +45,17 @@ import "log"
 // 进阶：
 //
 // 你能否实现每个操作均摊时间复杂度为 O(1) 的队列？换句话说，执行 n 个操作的总时间复杂度为 O(n) ，即使其中一个操作可能花费较长时间。
-type MyStack []int
-
-func (s *MyStack) Push(x int) {
-	// 入栈
-	*s = append(*s, x)
-}
-func (s *MyStack) Pop() int {
-	// 出栈
-	l := len(*s)
-	v := (*s)[l-1]
-	*s = (*s)[:l-1]
-	return v
-}
-func (s *MyStack) Top() int {
-	// peek 栈首
-	l := len(*s)
-	v := (*s)[l-1]
-	return v
-}
-func (s *MyStack) Empty() bool {
-	return len(*s) == 0
-}
 
 type MyQueue struct {
 	// 队列的数据结构包含一个入栈和一个出栈
-	stackIn  *MyStack
-	stackOut *MyStack
+	stackIn  *util.MyIntStack
+	stackOut *util.MyIntStack
 }
 
 func constructor() MyQueue {
 	return MyQueue{
-		stackIn:  &MyStack{},
-		stackOut: &MyStack{},
+		stackIn:  &util.MyIntStack{},
+		stackOut: &util.MyIntStack{},
 	}
 }
 
